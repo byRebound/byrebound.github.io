@@ -7,18 +7,17 @@ export async function handler(event, context) {
   }
 
   try {
-    const { amount, currency = "usd" } = JSON.parse(event.body);
+    const { paymentIntentId } = JSON.parse(event.body);
 
-    // Create a PaymentIntent for a dynamic amount
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount, // in cents
-      currency,
-    });
+    // Confirm the PaymentIntent server-side
+    const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId);
+
+    const success = paymentIntent.status === "succeeded";
 
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ clientSecret: paymentIntent.client_secret }),
+      body: JSON.stringify({ success, status: paymentIntent.status }),
     };
   } catch (err) {
     return {

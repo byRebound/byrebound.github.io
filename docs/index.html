@@ -1,52 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stripe Checkout Demo</title>
+  <meta charset="UTF-8">
+  <title>Stripe Payment</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Stripe Checkout Example</h1>
+  <h1>Pay $20</h1>
+  <form id="payment-form">
+    <div id="card-element"></div>
+    <button type="submit">Pay</button>
+  </form>
+  <p id="payment-result"></p>
 
-  <!-- Buy button -->
-  <button id="checkout">Buy for $20</button>
-
-  <!-- Stripe.js -->
-  <script src="https://js.stripe.com/v3/"></script>
-
-  <!-- Your checkout logic -->
-  <script>
-    // Use your actual publishable key here
-    const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY");
-
-    document.querySelector("#checkout").addEventListener("click", async () => {
-      try {
-        // Call your backend to create a Checkout Session
-        const response = await fetch(
-          "https://your-serverless-function-url.com/api/create-checkout-session",
-          { method: "POST" }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to create session");
-        }
-
-        const session = await response.json();
-
-        // Redirect the user to Stripe Checkout
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id,
-        });
-
-        if (result.error) {
-          alert(result.error.message);
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Something went wrong. Please try again.");
-      }
-    });
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
-
