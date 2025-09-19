@@ -1,0 +1,13 @@
+{
+  "name": "Boomerang",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'no build step needed'"
+  },
+  "dependencies": {
+    "stripe": "^16.0.0"
+  },
+
+}
